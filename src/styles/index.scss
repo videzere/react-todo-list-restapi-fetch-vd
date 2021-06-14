@@ -11,3 +11,9 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+.show>span {
+    visibility: hidden;
+}
+.show:hover>span {
+        visibility: visible;
+}
