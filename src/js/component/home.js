@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Console, stringify } from "react";
 import { Container, Form, FormGroup, ListGroup } from "react-bootstrap";
 import { useState } from "react";
 
@@ -59,3 +59,125 @@ export function Home() {
 		</Container>
 	);
 }
+
+// let baseUrl = "https://assets.breatheco.de/apis/fake/todos/user";
+let data;
+
+const updateTodolist = async newTodolist => {
+	try {
+		let resp = await fetch(
+			`https://assets.breatheco.de/apis/fake/todos/user/videzere`,
+			{
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(newTodolist)
+			}
+		);
+		let data = await resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+		if (resp.ok) {
+			console.log(resp.ok); // will be true if the response is successfull
+			// console.log(resp.status); // the status code = 200 or code = 400 etc.
+			// console.log(resp.text()); // will try return the exact result as string			//here is were your code should start after the fetch finishes
+			console.log(data); //this will print on the console the exact object received from the server
+		} else {
+			console.log(resp.status); // the status code = 200 or code = 400 etc.
+			console.log(data); //this will print on the console the exact object received from the server
+		}
+	} catch (error) {
+		//error handling
+		console.log(error);
+	}
+};
+//updateTodolist(data);
+// updateTodolist([
+// 	{
+// 		label: "other task",
+// 		done: false
+// 	},
+// 	{
+// 		label: "other task 2",
+// 		done: false
+// 	}
+// ]);
+
+const getTodolist = async () => {
+	try {
+		let resp = await fetch(
+			`https://assets.breatheco.de/apis/fake/todos/user/videzere`
+		);
+		let data = await resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+		if (resp.ok) {
+			// console.log(resp.ok); // will be true if the response is successfull
+			// console.log(resp.status); // the status code = 200 or code = 400 etc.
+			// console.log(resp.text()); // will try return the exact result as string			//here is were your code should start after the fetch finishes
+			console.log(data); //this will print on the console the exact object received from the server
+			updateTodolist(data);
+		} else {
+			// console.log(resp.status); // the status code = 200 or code = 400 etc.
+			// console.log(data); //this will print on the console the exact object received from the server
+		}
+	} catch (error) {
+		//error handling
+		console.log(error);
+	}
+};
+//getTodolist();
+
+const createTodolist = async () => {
+	try {
+		let resp = await fetch(
+			`https://assets.breatheco.de/apis/fake/todos/user/videzere`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify([])
+			}
+		);
+		let data = await resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+		if (resp.ok) {
+			getTodolist();
+			// console.log(resp.ok); // will be true if the response is successfull
+			// console.log(resp.status); // the status code = 200 or code = 400 etc.
+			// console.log(resp.text()); // will try return the exact result as string			//here is were your code should start after the fetch finishes
+			// console.log(data); //this will print on the console the exact object received from the server
+		} else {
+			// console.log(resp.status); // the status code = 200 or code = 400 etc.
+			//console.log(data); //this will print on the console the exact object received from the server
+		}
+	} catch (error) {
+		//error handling
+		console.log(error);
+	}
+};
+//createTodolist();
+
+const verifyUser = async () => {
+	try {
+		let resp = await fetch(
+			`https://assets.breatheco.de/apis/fake/todos/user/videzere`
+		);
+		let data = await resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+		if (resp.status === 404) {
+			// 	console.log(resp.ok); // will be true if the response is successfull
+			// 	console.log(resp.status); // the status code = 200 or code = 400 etc.
+			createTodolist();
+		}
+		if (resp.ok) {
+			// console.log(resp.ok); // will be true if the response is successfull
+			// console.log(resp.status); // the status code = 200 or code = 400 etc.
+			// console.log(resp.text()); // will try return the exact result as string			//here is were your code should start after the fetch finishes
+			// console.log(data); //this will print on the console the exact object received from the server
+			getTodolist();
+		} else {
+			console.log(resp.status); // the status code = 200 or code = 400 etc.
+		}
+	} catch (error) {
+		//error handling
+		console.log(error);
+	}
+};
+verifyUser();
